@@ -1,5 +1,5 @@
 # serverless-plugin-lambda-reducer
-## Reduce lambda package to host only lambda dependencies
+## Reduce lambda package so it hosts only lambda dependencies
 ## Plugin for Serverless 0.5.x
 
 By default Serverless 0.5.x packages whole contents of folder that covers scope of lambda function.
