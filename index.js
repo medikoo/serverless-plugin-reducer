@@ -35,9 +35,9 @@ module.exports = function (Serverless) {
 		var packageRoot = handlerFullPath.replace(func.handler, "");
 
 		// 2. Custom copy handling
-		var filter = this._processExcludePatterns(func, pathDist, stage, region);
+		var filter = this._processExcludePatterns(func, pathDist, stage, region)
+		  , funcMetaPath = dirname(func._filePath);
 
-		var funcMetaPath = dirname(func._filePath);
 		return deferred(
 			// Copy meta: s-function.json
 			copy(func._filePath, resolve(pathDist, func._filePath.slice(packageRoot.length)), {
