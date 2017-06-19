@@ -1,6 +1,7 @@
 "use strict";
 
 var last            = require("es5-ext/array/#/last")
+  , memoize         = require("memoizee")
   , deferred        = require("deferred")
   , path            = require("path")
   , copy            = require("fs2/copy")
@@ -32,27 +33,51 @@ module.exports = function (Serverless) {
 			);
 		}
 
-		var packageRoot = handlerFullPath.replace(func.handler, "");
+		var rootPath = resolve(handlerFullPath.replace(func.handler, ""))
+		  , rootPathLength = rootPath.length + 1;
 
 		// 2. Custom copy handling
 		var filter = this._processExcludePatterns(func, pathDist, stage, region)
-		  , funcMetaPath = dirname(func._filePath);
+		  , lambdaPath = dirname(func._filePath);
+
+		var copyPackageJson = memoize(
+			function (dirPath) {
+				var packageJsonPath = resolve(dirPath, "package.json");
+				return copy(
+					packageJsonPath,
+					resolve(pathDist, packageJsonPath.slice(rootPathLength)),
+					{
+						intermediate: true,
+						loose: true
+					}
+				);
+			},
+			{ primitive: true, promise: true }
+		);
+		var copyPackageJsonDeep = function (modulePath) {
+			var dirPath = dirname(modulePath), dirs = [dirPath];
+			while (dirPath !== rootPath) {
+				dirPath = dirname(dirPath);
+				dirs.push(dirPath);
+			}
+			return deferred.map(dirs, copyPackageJson);
+		};
 
 		return deferred(
 			// Copy meta: s-function.json
-			copy(func._filePath, resolve(pathDist, func._filePath.slice(packageRoot.length)), {
+			copy(func._filePath, resolve(pathDist, func._filePath.slice(rootPathLength)), {
 				intermediate: true
 			}),
 			// Copy meta: event.json
 			copy(
-				resolve(funcMetaPath, "event.json"),
-				resolve(pathDist, funcMetaPath.slice(packageRoot.length), "event.json"),
+				resolve(lambdaPath, "event.json"),
+				resolve(pathDist, lambdaPath.slice(rootPathLength), "event.json"),
 				{ intermediate: true, loose: true }
 			),
 			// Copy meta: s-templates.json
 			copy(
-				resolve(funcMetaPath, "s-templates.json"),
-				resolve(pathDist, funcMetaPath.slice(packageRoot.length), "s-templates.json"),
+				resolve(lambdaPath, "s-templates.json"),
+				resolve(pathDist, lambdaPath.slice(rootPathLength), "s-templates.json"),
 				{ intermediate: true, loose: true }
 			),
 			// Copy handler and it's dependencies
@@ -61,9 +86,12 @@ module.exports = function (Serverless) {
 				handlerFullPath.slice(0, -func.handler.slice(func.handler.indexOf(".")).length)
 			)(function (programPath) {
 				return getDependencies(programPath).map(function (modulePath) {
-					var destPath = resolve(pathDist, modulePath.slice(packageRoot.length));
-					if (!filter(modulePath, destPath)) return null;
-					return copy(modulePath, destPath, { intermediate: true });
+					var destPath = resolve(pathDist, modulePath.slice(rootPathLength));
+					return deferred(
+						copyPackageJsonDeep(modulePath),
+						filter(modulePath, destPath) &&
+							copy(modulePath, destPath, { intermediate: true })
+					);
 				});
 			})
 		);

@@ -13,10 +13,11 @@
     "url": "git://github.com/medikoo/serverless-plugin-lambda-reducer.git"
   },
   "dependencies": {
+    "cjs-module": "^1.2.0",
     "deferred": "^0.7.8",
     "es5-ext": "^0.10.23",
-    "cjs-module": "^1.2.0",
-    "fs2": "^0.2.5"
+    "fs2": "^0.2.5",
+    "memoizee": "^0.4.5"
   },
   "devDependencies": {
     "eslint": "4",
