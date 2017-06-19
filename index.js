@@ -39,23 +39,23 @@ module.exports = function (Serverless) {
 
 		var funcMetaPath = dirname(func._filePath);
 		return deferred(
-			// Meta: s-function.json
+			// Copy meta: s-function.json
 			copy(func._filePath, resolve(pathDist, func._filePath.slice(packageRoot.length)), {
 				intermediate: true
 			}),
-			// Meta: event.json
+			// Copy meta: event.json
 			copy(
 				resolve(funcMetaPath, "event.json"),
 				resolve(pathDist, funcMetaPath.slice(packageRoot.length), "event.json"),
 				{ intermediate: true, loose: true }
 			),
-			// Meta: s-templates.json
+			// Copy meta: s-templates.json
 			copy(
 				resolve(funcMetaPath, "s-templates.json"),
 				resolve(pathDist, funcMetaPath.slice(packageRoot.length), "s-templates.json"),
 				{ intermediate: true, loose: true }
 			),
-			// Handler and it's dependencies
+			// Copy handler and it's dependencies
 			cjsResolve(
 				"/",
 				handlerFullPath.slice(0, -func.handler.slice(func.handler.indexOf(".")).length)
