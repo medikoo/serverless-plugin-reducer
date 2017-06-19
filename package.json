@@ -6,7 +6,8 @@
   "keywords": [
     "serverless",
     "plugin",
-    "lamdba"
+    "lamdba",
+    "aws"
   ],
   "repository": {
     "type": "git",
