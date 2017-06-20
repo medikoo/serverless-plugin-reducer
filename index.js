@@ -1,6 +1,7 @@
 "use strict";
 
 var last            = require("es5-ext/array/#/last")
+  , startsWith      = require("es5-ext/string/#/starts-with")
   , memoize         = require("memoizee")
   , deferred        = require("deferred")
   , path            = require("path")
@@ -8,7 +9,7 @@ var last            = require("es5-ext/array/#/last")
   , cjsResolve      = require("cjs-module/resolve")
   , getDependencies = require("cjs-module/get-dependencies");
 
-var resolve = path.resolve, dirname = path.dirname;
+var resolve = path.resolve, dirname = path.dirname, sep = path.sep;
 
 module.exports = function (Serverless) {
 	Serverless.classes.Runtime.prototype.copyFunction = function (func, pathDist, stage, region) {
@@ -86,6 +87,13 @@ module.exports = function (Serverless) {
 				handlerFullPath.slice(0, -func.handler.slice(func.handler.indexOf(".")).length)
 			)(function (programPath) {
 				return getDependencies(programPath).map(function (modulePath) {
+					if (!startsWith.call(modulePath, rootPath + sep)) {
+						throw new Error(
+							JSON.stringify(modulePath) +
+								" is outside of declared lambda path " +
+								JSON.stringify(rootPath)
+						);
+					}
 					var destPath = resolve(pathDist, modulePath.slice(rootPathLength));
 					return deferred(
 						copyPackageJsonDeep(modulePath),
