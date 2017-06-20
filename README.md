@@ -22,3 +22,25 @@ Activate plugin in `s-project.json`
   ]
 }
 ```
+
+### Options
+
+#### `include`
+
+By default reducer takes following files
+- `s-function.json`
+- `event.json` (if exists)
+- `s-templates.json` (if exists)
+- Lambda handler and all it's dependencies (resolved by reading require chain)
+
+If some other files needs to be included they can be pointed with `include` option passed to `s-function.json` as follows:
+
+```json
+...
+  "custom": {
+    "lambdaReducer": {
+      "include": ["extra-file-to-include.txt", "some/dir-to-include"]
+    }
+  }
+...
+```

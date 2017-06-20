@@ -1,6 +1,8 @@
 "use strict";
 
 var last            = require("es5-ext/array/#/last")
+  , ensureArray     = require("es5-ext/array/valid-array")
+  , ensureString    = require("es5-ext/object/validate-stringifiable-value")
   , startsWith      = require("es5-ext/string/#/starts-with")
   , memoize         = require("memoizee")
   , deferred        = require("deferred")
@@ -40,6 +42,11 @@ module.exports = function (Serverless) {
 		// 2. Custom copy handling
 		var filter = this._processExcludePatterns(func, pathDist, stage, region)
 		  , lambdaPath = dirname(func._filePath);
+
+		var extraIncludes;
+		if (func.custom.lambdaReducer && func.custom.lambdaReducer.include) {
+			extraIncludes = ensureArray(func.custom.lambdaReducer.include).map(ensureString);
+		}
 
 		var copyPackageJson = memoize(
 			function (dirPath) {
@@ -101,7 +108,14 @@ module.exports = function (Serverless) {
 							copy(modulePath, destPath, { intermediate: true })
 					);
 				});
-			})
+			}),
+			// Copy eventual extra includes
+			extraIncludes &&
+				deferred.map(extraIncludes, function (filePath) {
+					return copy(resolve(rootPath, filePath), resolve(pathDist, filePath), {
+						intermediate: true
+					});
+				})
 		);
 	};
 };
