@@ -13,7 +13,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### BREAKING CHANGES
 
-* Drop support for Serverless v0.5 and introduce support for Serverless v1. (v0.5 version will remain maintaned at derived branch)
+* Drop support for Serverless v0.5 and introduce support for Serverless v1. (v0.5 version will remain maintained at derived branch)
 
 
 
