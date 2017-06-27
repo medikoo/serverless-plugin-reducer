@@ -111,8 +111,8 @@ module.exports = function (Serverless) {
 			}),
 			// Copy eventual extra includes
 			extraIncludes &&
-				deferred.map(extraIncludes, function (filePath) {
-					return copy(resolve(rootPath, filePath), resolve(pathDist, filePath), {
+				deferred.map(extraIncludes, function (includePath) {
+					return copy(resolve(rootPath, includePath), resolve(pathDist, includePath), {
 						intermediate: true
 					});
 				})
