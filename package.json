@@ -29,9 +29,6 @@
     "root": true,
     "env": {
       "node": true
-    },
-    "globals": {
-      "Promise": true
     }
   },
   "scripts": {
