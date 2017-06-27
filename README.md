@@ -36,7 +36,7 @@ functions:
     package:
       include:
         - non-node-js-module.txt
-				- required-through-dynamic-path.js
+        - required-through-dynamic-path.js
 ```
 
 See [Packaging functions separately](https://serverless.com/framework/docs/providers/aws/guide/packaging/#packaging-functions-separately) for more info.
