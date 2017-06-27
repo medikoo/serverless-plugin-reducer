@@ -22,10 +22,10 @@
   },
   "devDependencies": {
     "eslint": "4",
-    "eslint-config-medikoo-es5": "^1.4"
+    "eslint-config-medikoo": "^1.21.0"
   },
   "eslintConfig": {
-    "extends": "medikoo-es5",
+    "extends": "medikoo",
     "root": true,
     "env": {
       "node": true

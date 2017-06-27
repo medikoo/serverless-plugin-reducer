@@ -1,17 +1,15 @@
 "use strict";
 
-var last            = require("es5-ext/array/#/last")
-  , ensureArray     = require("es5-ext/array/valid-array")
-  , ensureString    = require("es5-ext/object/validate-stringifiable-value")
-  , startsWith      = require("es5-ext/string/#/starts-with")
-  , memoize         = require("memoizee")
-  , deferred        = require("deferred")
-  , path            = require("path")
-  , copy            = require("fs2/copy")
-  , cjsResolve      = require("cjs-module/resolve")
-  , getDependencies = require("cjs-module/get-dependencies");
-
-var resolve = path.resolve, dirname = path.dirname, sep = path.sep;
+const last                      = require("es5-ext/array/#/last")
+    , ensureArray               = require("es5-ext/array/valid-array")
+    , ensureString              = require("es5-ext/object/validate-stringifiable-value")
+    , startsWith                = require("es5-ext/string/#/starts-with")
+    , memoize                   = require("memoizee")
+    , deferred                  = require("deferred")
+    , { resolve, dirname, sep } = require("path")
+    , copy                      = require("fs2/copy")
+    , cjsResolve                = require("cjs-module/resolve")
+    , getDependencies           = require("cjs-module/get-dependencies");
 
 module.exports = function (Serverless) {
 	Serverless.classes.Runtime.prototype.copyFunction = function (func, pathDist, stage, region) {
@@ -19,11 +17,11 @@ module.exports = function (Serverless) {
 
 		// Status
 		Serverless.utils.sDebug(
-			stage + " - " + region + " - " + func.getName() + ": Copying in dist dir " + pathDist
+			`${ stage } - ${ region } - ${ func.getName() }: Copying in dist dir ${ pathDist }`
 		);
 
 		// Extract the root of the lambda package from the handler property
-		var handlerFullPath = func
+		const handlerFullPath = func
 			.getRootPath(last.call(func.handler.split("/")))
 			.replace(/\\/g, "/");
 
@@ -31,26 +29,27 @@ module.exports = function (Serverless) {
 		if (!handlerFullPath.endsWith(func.handler)) {
 			return Promise.reject(
 				new Error(
-					"This function's handler is invalid and not in the file system: " + func.handler
+					"This function's handler is invalid and not in the " +
+						`file system: ${ func.handler }`
 				)
 			);
 		}
 
-		var rootPath = resolve(handlerFullPath.replace(func.handler, ""))
-		  , rootPathLength = rootPath.length + 1;
+		const rootPath = resolve(handlerFullPath.replace(func.handler, ""))
+		    , rootPathLength = rootPath.length + 1;
 
 		// 2. Custom copy handling
-		var filter = this._processExcludePatterns(func, pathDist, stage, region)
-		  , lambdaPath = dirname(func._filePath);
+		const filter = this._processExcludePatterns(func, pathDist, stage, region)
+		    , lambdaPath = dirname(func._filePath);
 
-		var extraIncludes;
+		let extraIncludes;
 		if (func.custom.lambdaReducer && func.custom.lambdaReducer.include) {
 			extraIncludes = ensureArray(func.custom.lambdaReducer.include).map(ensureString);
 		}
 
-		var copyPackageJson = memoize(
-			function (dirPath) {
-				var packageJsonPath = resolve(dirPath, "package.json");
+		const copyPackageJson = memoize(
+			dirPath => {
+				const packageJsonPath = resolve(dirPath, "package.json");
 				return copy(
 					packageJsonPath,
 					resolve(pathDist, packageJsonPath.slice(rootPathLength)),
@@ -62,8 +61,9 @@ module.exports = function (Serverless) {
 			},
 			{ primitive: true, promise: true }
 		);
-		var copyPackageJsonDeep = function (modulePath) {
-			var dirPath = dirname(modulePath), dirs = [dirPath];
+		const copyPackageJsonDeep = function (modulePath) {
+			let dirPath = dirname(modulePath);
+			const dirs = [dirPath];
 			while (dirPath !== rootPath) {
 				dirPath = dirname(dirPath);
 				dirs.push(dirPath);
@@ -92,30 +92,29 @@ module.exports = function (Serverless) {
 			cjsResolve(
 				"/",
 				handlerFullPath.slice(0, -func.handler.slice(func.handler.indexOf(".")).length)
-			)(function (programPath) {
-				return getDependencies(programPath).map(function (modulePath) {
+			)(programPath =>
+				getDependencies(programPath).map(modulePath => {
 					if (!startsWith.call(modulePath, rootPath + sep)) {
 						throw new Error(
-							JSON.stringify(modulePath) +
-								" is outside of declared lambda path " +
-								JSON.stringify(rootPath)
+							`${ JSON.stringify(modulePath) } is outside of declared ` +
+								`lambda path ${ JSON.stringify(rootPath) }`
 						);
 					}
-					var destPath = resolve(pathDist, modulePath.slice(rootPathLength));
+					const destPath = resolve(pathDist, modulePath.slice(rootPathLength));
 					return deferred(
 						copyPackageJsonDeep(modulePath),
 						filter(modulePath, destPath) &&
 							copy(modulePath, destPath, { intermediate: true })
 					);
-				});
-			}),
+				})
+			),
 			// Copy eventual extra includes
 			extraIncludes &&
-				deferred.map(extraIncludes, function (includePath) {
-					return copy(resolve(rootPath, includePath), resolve(pathDist, includePath), {
+				deferred.map(extraIncludes, includePath =>
+					copy(resolve(rootPath, includePath), resolve(pathDist, includePath), {
 						intermediate: true
-					});
-				})
+					})
+				)
 		);
 	};
 };
