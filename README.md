@@ -11,7 +11,7 @@ __This plugin ensures that aside of obligatory meta files it is only dependencie
 
 ### Installation
 
-	$ npm install serverless-plugin-lambda-reducer
+	$ npm install serverless-plugin-lambda-reducer@1
 
 Activate plugin in `s-project.json`
 
