@@ -11,8 +11,8 @@ const getModulePaths = (servicePath, handlerPath) => {
 		for (const modulePath of deps) {
 			if (!modulePath.startsWith(servicePath + sep)) {
 				throw new Error(
-					`${ JSON.stringify(modulePath) } is outside of declared ` +
-						`lambda path ${ JSON.stringify(servicePath) }`
+					`${ JSON.stringify(modulePath) } is outside of service path ` +
+						`${ JSON.stringify(servicePath) }`
 				);
 			}
 			let dirPath = dirname(modulePath);
