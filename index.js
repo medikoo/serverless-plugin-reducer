@@ -89,11 +89,17 @@ module.exports = function (Serverless) {
 				{ intermediate: true, loose: true }
 			),
 			// Copy handler and it's dependencies
-			cjsResolve(
-				rootPath,
-				"./" + func.handler.slice(0, func.handler.indexOf("."))
-			)(function (programPath) {
+			cjsResolve(rootPath, "./" + func.handler.slice(0, func.handler.indexOf(".")))(function (
+				programPath
+			) {
 				return getDependencies(programPath).map(function (modulePath) {
+					if (!programPath) {
+						throw new Error(
+							JSON.stringify(func.handler) +
+								" doesn't reference a valid Node.js module"
+						);
+					}
+
 					if (!startsWith.call(modulePath, rootPath + sep)) {
 						throw new Error(
 							JSON.stringify(modulePath) +
