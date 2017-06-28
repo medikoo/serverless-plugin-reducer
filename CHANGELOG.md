@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.1"></a>
+## [2.0.1](https://github.com/medikoo/serverless-plugin-lambda-reducer/compare/v2.0.0...v2.0.1) (2017-06-28)
+
+
+### Bug Fixes
+
+* eslint version ([c5b521e](https://github.com/medikoo/serverless-plugin-lambda-reducer/commit/c5b521e))
+
+
+
 <a name="2.0.0"></a>
 # [2.0.0](https://github.com/medikoo/serverless-plugin-lambda-reducer/compare/v1.1.0...v2.0.0) (2017-06-27)
 
