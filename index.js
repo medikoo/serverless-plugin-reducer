@@ -90,8 +90,8 @@ module.exports = function (Serverless) {
 			),
 			// Copy handler and it's dependencies
 			cjsResolve(
-				"/",
-				handlerFullPath.slice(0, -func.handler.slice(func.handler.indexOf(".")).length)
+				rootPath,
+				"./" + func.handler.slice(0, func.handler.indexOf("."))
 			)(function (programPath) {
 				return getDependencies(programPath).map(function (modulePath) {
 					if (!startsWith.call(modulePath, rootPath + sep)) {
