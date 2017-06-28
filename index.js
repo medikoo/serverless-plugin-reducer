@@ -40,11 +40,8 @@ module.exports = class LambdaReducer {
 			const funcPackageConfig = functionObject.package || {};
 
 			return cjsResolve(
-				"/",
-				resolve(
-					servicePath,
-					functionObject.handler.slice(0, functionObject.handler.indexOf("."))
-				)
+				servicePath,
+				`./${ functionObject.handler.slice(0, functionObject.handler.indexOf(".")) }`
 			)(programPath =>
 				getModulePaths(servicePath, programPath).then(modulePaths => {
 					const exclude = ["**"];
