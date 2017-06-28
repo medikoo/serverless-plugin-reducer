@@ -42,8 +42,13 @@ module.exports = class LambdaReducer {
 			return cjsResolve(
 				servicePath,
 				`./${ functionObject.handler.slice(0, functionObject.handler.indexOf(".")) }`
-			)(programPath =>
-				getModulePaths(servicePath, programPath).then(modulePaths => {
+			)(programPath => {
+				if (!programPath) {
+					throw new Error(
+						`${ functionObject.handler } doesn't reference a valid Node.js module`
+					);
+				}
+				return getModulePaths(servicePath, programPath).then(modulePaths => {
 					const exclude = ["**"];
 					const include = this.getIncludes(funcPackageConfig.include).concat(modulePaths);
 					const zipFileName = `${ functionName }.zip`;
@@ -52,8 +57,8 @@ module.exports = class LambdaReducer {
 						functionObject.artifact = artifactPath;
 						return artifactPath;
 					});
-				})
-			);
+				});
+			});
 		};
 	}
 };
