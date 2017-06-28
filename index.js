@@ -45,7 +45,7 @@ module.exports = class LambdaReducer {
 			)(programPath => {
 				if (!programPath) {
 					throw new Error(
-						`${ functionObject.handler } doesn't reference a valid Node.js module`
+						`${ JSON.stringify(functionObject.handler) } doesn't reference a valid Node.js module`
 					);
 				}
 				return getModulePaths(servicePath, programPath).then(modulePaths => {
