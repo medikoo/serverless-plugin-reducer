@@ -21,7 +21,7 @@
     "memoizee": "^0.4.5"
   },
   "devDependencies": {
-    "eslint": "5",
+    "eslint": "4",
     "eslint-config-medikoo": "^1.21.0"
   },
   "eslintConfig": {
