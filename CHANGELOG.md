@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.2.0"></a>
+# [1.2.0](https://github.com/medikoo/serverless-plugin-lambda-reducer/compare/v1.1.1...v1.2.0) (2017-06-28)
+
+
+### Features
+
+* improve error handling ([b40230c](https://github.com/medikoo/serverless-plugin-lambda-reducer/commit/b40230c))
+
+
+
 <a name="1.1.1"></a>
 ## [1.1.1](https://github.com/medikoo/serverless-plugin-lambda-reducer/compare/v1.1.0...v1.1.1) (2017-06-28)
 
