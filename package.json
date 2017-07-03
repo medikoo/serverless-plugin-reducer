@@ -1,6 +1,6 @@
 {
   "name": "serverless-plugin-lambda-reducer",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Reduce size of lambda to it's dependencies",
   "author": "Mariusz Nowak <medyk@medikoo.com> (http://www.medikoo.com/)",
   "keywords": [
