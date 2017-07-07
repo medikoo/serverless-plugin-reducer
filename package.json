@@ -1,33 +1,38 @@
 {
-	"name": "serverless-plugin-reducer",
-	"version": "2.2.0",
-	"description": "Reduce size of lambda to it's dependencies",
-	"author": "Mariusz Nowak <medyk@medikoo.com> (http://www.medikoo.com/)",
-	"keywords": ["serverless", "plugin", "lamdba", "aws"],
-	"repository": {
-		"type": "git",
-		"url": "git://github.com/medikoo/serverless-plugin-reducer.git"
-	},
-	"dependencies": {
-		"cjs-module": "^1.2.1",
-		"deferred": "^0.7.8",
-		"es5-ext": "^0.10.23",
-		"fs2": "^0.2.5",
-		"memoizee": "^0.4.5"
-	},
-	"devDependencies": {
-		"eslint": "4",
-		"eslint-config-medikoo": "^1.21.0"
-	},
-	"eslintConfig": {
-		"extends": "medikoo",
-		"root": true,
-		"env": {
-			"node": true
-		}
-	},
-	"scripts": {
-		"lint": "eslint --ignore-path=.gitignore ."
-	},
-	"license": "MIT"
+  "name": "serverless-plugin-reducer",
+  "version": "2.2.1",
+  "description": "Reduce size of lambda to it's dependencies",
+  "author": "Mariusz Nowak <medyk@medikoo.com> (http://www.medikoo.com/)",
+  "keywords": [
+    "serverless",
+    "plugin",
+    "lamdba",
+    "aws"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/medikoo/serverless-plugin-reducer.git"
+  },
+  "dependencies": {
+    "cjs-module": "^1.2.1",
+    "deferred": "^0.7.8",
+    "es5-ext": "^0.10.23",
+    "fs2": "^0.2.5",
+    "memoizee": "^0.4.5"
+  },
+  "devDependencies": {
+    "eslint": "4",
+    "eslint-config-medikoo": "^1.21.0"
+  },
+  "eslintConfig": {
+    "extends": "medikoo",
+    "root": true,
+    "env": {
+      "node": true
+    }
+  },
+  "scripts": {
+    "lint": "eslint --ignore-path=.gitignore ."
+  },
+  "license": "MIT"
 }
