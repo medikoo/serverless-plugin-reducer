@@ -34,6 +34,13 @@ module.exports = class Reducer {
 			plugin => plugin.constructor.name === "Package"
 		);
 
+		// Turn off exludeDevDeps logic, it's irrelevant with this plugin
+		// and may largely affect performance of SLS
+		// (Since v1.17 it'll possible to turn it off less invasive way)
+		packagePlugin.excludeDevDependencies = function (params) {
+			return Promise.resolve(params);
+		};
+
 		packagePlugin.packageFunction = function (functionName) {
 			const { servicePath } = serverless.config;
 			const functionObject = this.serverless.service.getFunction(functionName);
