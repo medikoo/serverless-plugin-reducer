@@ -1,7 +1,7 @@
-# serverless-plugin-lambda-reducer
+# serverless-plugin-reducer
 ## Reduce lambda package so it hosts only lambda dependencies
 ## Plugin for Serverless v1
-### (for Serverless v0.5 version see [serverless-0.5 branch](https://github.com/medikoo/serverless-plugin-lambda-reducer/tree/serverless-0.5))
+### (for Serverless v0.5 version see [serverless-0.5 branch](https://github.com/medikoo/serverless-plugin-reducer/tree/serverless-0.5))
 
 By default Serverless packages whole contents of service folder in which lambda was configured, it raises issues in projects where we maintain many functions under one service, as package for each lambda contains content of whole service.
 
@@ -9,7 +9,7 @@ __This plugin ensures that it is only dependencies of given lambda that are pack
 
 ### Installation
 
-	$ npm install serverless-plugin-lambda-reducer
+	$ npm install serverless-plugin-reducer
 
 ### Configuration (within `serverless.yml`)
 
@@ -24,7 +24,7 @@ package:
 
 ```yaml
 plugins:
-  - serverless-plugin-lambda-reducer
+  - serverless-plugin-reducer
 ```
 
 3. If there some files that need to be included but escape automatic dependencies resolution (e.g. non Node.js module files, or modules required through dynamically resolved paths) they need to be included through `include` option as e.g.

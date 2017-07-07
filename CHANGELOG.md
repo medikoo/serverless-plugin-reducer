@@ -3,43 +3,43 @@
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
 <a name="2.1.0"></a>
-# [2.1.0](https://github.com/medikoo/serverless-plugin-lambda-reducer/compare/v2.0.2...v2.1.0) (2017-06-28)
+# [2.1.0](https://github.com/medikoo/serverless-plugin-reducer/compare/v2.0.2...v2.1.0) (2017-06-28)
 
 
 ### Features
 
-* improve error message ([e9b585a](https://github.com/medikoo/serverless-plugin-lambda-reducer/commit/e9b585a))
-* improve handling of handler awrong path ([f07f25a](https://github.com/medikoo/serverless-plugin-lambda-reducer/commit/f07f25a))
+* improve error message ([e9b585a](https://github.com/medikoo/serverless-plugin-reducer/commit/e9b585a))
+* improve handling of handler awrong path ([f07f25a](https://github.com/medikoo/serverless-plugin-reducer/commit/f07f25a))
 
 
 
 <a name="2.0.2"></a>
-## [2.0.2](https://github.com/medikoo/serverless-plugin-lambda-reducer/compare/v2.0.1...v2.0.2) (2017-06-28)
+## [2.0.2](https://github.com/medikoo/serverless-plugin-reducer/compare/v2.0.1...v2.0.2) (2017-06-28)
 
 
 ### Bug Fixes
 
-* program path resolution ([ce53036](https://github.com/medikoo/serverless-plugin-lambda-reducer/commit/ce53036))
+* program path resolution ([ce53036](https://github.com/medikoo/serverless-plugin-reducer/commit/ce53036))
 
 
 
 <a name="2.0.1"></a>
-## [2.0.1](https://github.com/medikoo/serverless-plugin-lambda-reducer/compare/v2.0.0...v2.0.1) (2017-06-28)
+## [2.0.1](https://github.com/medikoo/serverless-plugin-reducer/compare/v2.0.0...v2.0.1) (2017-06-28)
 
 
 ### Bug Fixes
 
-* eslint version ([c5b521e](https://github.com/medikoo/serverless-plugin-lambda-reducer/commit/c5b521e))
+* eslint version ([c5b521e](https://github.com/medikoo/serverless-plugin-reducer/commit/c5b521e))
 
 
 
 <a name="2.0.0"></a>
-# [2.0.0](https://github.com/medikoo/serverless-plugin-lambda-reducer/compare/v1.1.0...v2.0.0) (2017-06-27)
+# [2.0.0](https://github.com/medikoo/serverless-plugin-reducer/compare/v1.1.0...v2.0.0) (2017-06-27)
 
 
 ### Features
 
-* reconfigure for Serverless v1 ([4cf6ab9](https://github.com/medikoo/serverless-plugin-lambda-reducer/commit/4cf6ab9))
+* reconfigure for Serverless v1 ([4cf6ab9](https://github.com/medikoo/serverless-plugin-reducer/commit/4cf6ab9))
 
 
 ### BREAKING CHANGES
@@ -49,17 +49,17 @@ All notable changes to this project will be documented in this file. See [standa
 
 
 <a name="1.1.0"></a>
-# [1.1.0](https://github.com/medikoo/serverless-plugin-lambda-reducer/compare/v1.0.0...v1.1.0) (2017-06-20)
+# [1.1.0](https://github.com/medikoo/serverless-plugin-reducer/compare/v1.0.0...v1.1.0) (2017-06-20)
 
 
 ### Bug Fixes
 
-* crash if resolved module from outer path ([0bd00c2](https://github.com/medikoo/serverless-plugin-lambda-reducer/commit/0bd00c2))
+* crash if resolved module from outer path ([0bd00c2](https://github.com/medikoo/serverless-plugin-reducer/commit/0bd00c2))
 
 
 ### Features
 
-* `include` option ([89bbfcb](https://github.com/medikoo/serverless-plugin-lambda-reducer/commit/89bbfcb))
+* `include` option ([89bbfcb](https://github.com/medikoo/serverless-plugin-reducer/commit/89bbfcb))
 
 
 
@@ -69,4 +69,4 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Bug Fixes
 
-* ensure to copy package.json files ([8b80aa5](https://github.com/medikoo/serverless-plugin-lambda-reducer/commit/8b80aa5))
+* ensure to copy package.json files ([8b80aa5](https://github.com/medikoo/serverless-plugin-reducer/commit/8b80aa5))

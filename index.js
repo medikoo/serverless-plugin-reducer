@@ -28,7 +28,7 @@ const getModulePaths = (servicePath, handlerPath) => {
 	});
 };
 
-module.exports = class LambdaReducer {
+module.exports = class Reducer {
 	constructor (serverless) {
 		const packagePlugin = serverless.pluginManager.plugins.find(
 			plugin => plugin.constructor.name === "Package"
