@@ -24,6 +24,9 @@
     "eslint": "4",
     "eslint-config-medikoo": "^1.21.0"
   },
+  "peerDependencies": {
+    "serverless": "1"
+  },
   "eslintConfig": {
     "extends": "medikoo",
     "root": true,
