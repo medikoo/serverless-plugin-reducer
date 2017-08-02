@@ -44,6 +44,13 @@ module.exports = class Reducer {
 		packagePlugin.packageFunction = function (functionName) {
 			const { servicePath } = serverless.config;
 			const functionObject = this.serverless.service.getFunction(functionName);
+			if (!functionObject.handler) {
+				return Promise.reject(
+					new Error(
+						`Function ${ JSON.stringify(functionName) } misses 'handler' configuration`
+					)
+				);
+			}
 			const funcPackageConfig = functionObject.package || {};
 
 			return cjsResolve(
