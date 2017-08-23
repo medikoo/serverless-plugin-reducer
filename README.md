@@ -11,14 +11,14 @@ __This plugin ensures that aside of obligatory meta files it is only dependencie
 
 ### Installation
 
-	$ npm install serverless-plugin-lambda-reducer@1
+	$ npm install serverless-plugin-reducer@1
 
 Activate plugin in `s-project.json`
 
 ```json
 {
   "plugins": [
-    "serverless-plugin-lambda-reducer"
+    "serverless-plugin-reducer"
   ]
 }
 ```
