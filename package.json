@@ -14,15 +14,15 @@
     "url": "git://github.com/medikoo/serverless-plugin-reducer.git"
   },
   "dependencies": {
-    "cjs-module": "^1.2.1",
+    "cjs-module": "^1.2.2",
     "deferred": "^0.7.8",
-    "es5-ext": "^0.10.23",
-    "fs2": "^0.2.5",
-    "memoizee": "^0.4.5"
+    "es5-ext": "^0.10.30",
+    "fs2": "^0.2.7",
+    "memoizee": "^0.4.11"
   },
   "devDependencies": {
-    "eslint": "4",
-    "eslint-config-medikoo": "^1.21.0"
+    "eslint": "^4.7",
+    "eslint-config-medikoo": "^1.25"
   },
   "peerDependencies": {
     "serverless": "1"
