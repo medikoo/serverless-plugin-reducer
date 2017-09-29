@@ -1,32 +1,60 @@
 "use strict";
 
 const { resolve, dirname, sep } = require("path")
+    , globby                    = require("globby")
+    , multimatch                = require("multimatch")
+    , lstat                     = require("fs2/lstat")
     , cjsResolve                = require("cjs-module/resolve")
     , getDependencies           = require("cjs-module/get-dependencies");
 
-const getModulePaths = (servicePath, handlerPath) => {
-	const dirPaths = new Set([servicePath]);
-
-	return getDependencies(handlerPath).then(deps => {
-		for (const modulePath of deps) {
-			if (!modulePath.startsWith(servicePath + sep)) {
-				throw new Error(
-					`${ JSON.stringify(modulePath) } is outside of service path ` +
-						`${ JSON.stringify(servicePath) }`
-				);
-			}
-			let dirPath = dirname(modulePath);
-			while (!dirPaths.has(dirPath)) {
-				dirPaths.add(dirPath);
-				dirPath = dirname(dirPath);
-			}
+const resolveLambdaModulePaths = (servicePath, functionObject) =>
+	// Resolve path to main lambda program
+	cjsResolve(
+		servicePath,
+		`./${ functionObject.handler.slice(0, functionObject.handler.indexOf(".")) }`
+	)(programPath => {
+		if (!programPath) {
+			throw new Error(
+				`${ JSON.stringify(functionObject.handler) } doesn't reference ` +
+					"a valid Node.js module"
+			);
 		}
-		const servicePathLength = servicePath.length + 1;
-		return deps
-			.concat(Array.from(dirPaths, dirPath => resolve(dirPath, "package.json")))
-			.map(modulePath => modulePath.slice(servicePathLength));
+		const dirPaths = new Set([servicePath]);
+
+		// Resolve list of all dependencies of main lambda program
+		return getDependencies(programPath).then(deps => {
+			// Ensure to additionally take in all 'package.json' files existing in directories
+			// which contain dependency modules
+			// ('main' field in package.json may play role in module resolution)
+			for (const modulePath of deps) {
+				if (!modulePath.startsWith(servicePath + sep)) {
+					throw new Error(
+						`${ JSON.stringify(modulePath) } is outside of service path ` +
+							`${ JSON.stringify(servicePath) }`
+					);
+				}
+				let dirPath = dirname(modulePath);
+				while (!dirPaths.has(dirPath)) {
+					dirPaths.add(dirPath);
+					dirPath = dirname(dirPath);
+				}
+			}
+			const servicePathLength = servicePath.length + 1;
+			return Promise.all(
+				Array.from(dirPaths, dirPath => resolve(dirPath, "package.json")).map(filePath =>
+					lstat(filePath).then(
+						stats => stats.isFile() ? filePath : null,
+						err => {
+							if (err.code === "ENOENT") return null;
+							throw err;
+						}
+					))
+			).then(packageJsonPaths =>
+				deps
+					.concat(packageJsonPaths.filter(Boolean))
+					.map(modulePath => modulePath.slice(servicePathLength)));
+		});
 	});
-};
 
 module.exports = class Reducer {
 	constructor(serverless) {
@@ -34,16 +62,11 @@ module.exports = class Reducer {
 			plugin => plugin.constructor.name === "Package"
 		);
 
-		// Turn off exludeDevDeps logic, it's irrelevant with this plugin
-		// and may largely affect performance of SLS
-		// (Since v1.17 it'll possible to turn it off less invasive way)
-		packagePlugin.excludeDevDependencies = function (params) {
-			return Promise.resolve(params);
-		};
-
-		packagePlugin.packageFunction = function (functionName) {
-			const { servicePath } = serverless.config;
+		packagePlugin.resolveFilePathsFunction = function (functionName) {
 			const functionObject = this.serverless.service.getFunction(functionName);
+			const funcPackageConfig = functionObject.package || {};
+			const { servicePath } = serverless.config;
+
 			if (!functionObject.handler) {
 				return Promise.reject(
 					new Error(
@@ -51,29 +74,29 @@ module.exports = class Reducer {
 					)
 				);
 			}
-			const funcPackageConfig = functionObject.package || {};
 
-			return cjsResolve(
-				servicePath,
-				`./${ functionObject.handler.slice(0, functionObject.handler.indexOf(".")) }`
-			)(programPath => {
-				if (!programPath) {
-					throw new Error(
-						`${ JSON.stringify(functionObject.handler) } doesn't reference ` +
-							"a valid Node.js module"
-					);
-				}
-				return getModulePaths(servicePath, programPath).then(modulePaths => {
-					const exclude = ["**"];
-					const include = this.getIncludes(funcPackageConfig.include).concat(modulePaths);
-					const zipFileName = `${ functionName }.zip`;
-
-					return this.zipService(exclude, include, zipFileName).then(artifactPath => {
-						functionObject.artifact = artifactPath;
-						return artifactPath;
-					});
-				});
-			});
+			return Promise.all([
+				// Get all lambda dependencies resolved by walking require paths
+				resolveLambdaModulePaths(servicePath, functionObject),
+				// Get all files mentioned specifically in 'include' option
+				globby(this.getIncludes(funcPackageConfig.include), {
+					cwd: this.serverless.config.servicePath,
+					dot: true,
+					silent: true,
+					follow: true,
+					nodir: true
+				})
+			]).then(([modulePaths, includeModulePaths]) =>
+				// Apply eventual 'exclude' rules to automatically resolved dependencies
+				multimatch(
+					modulePaths,
+					["**"].concat(
+						this.getExcludes(funcPackageConfig.include).map(
+							pattern =>
+								pattern.charAt(0) === "!" ? pattern.slice(1) : `!${ pattern }`
+						)
+					)
+				).concat(includeModulePaths));
 		};
 	}
 };
