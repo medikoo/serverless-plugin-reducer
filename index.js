@@ -3,7 +3,8 @@
 const { resolve, dirname, sep } = require("path")
     , globby                    = require("globby")
     , multimatch                = require("multimatch")
-    , lstat                     = require("fs2/lstat")
+    , BbPromise                 = require("bluebird")
+    , fs                        = BbPromise.promisifyAll(require("graceful-fs"))
     , cjsResolve                = require("cjs-module/resolve")
     , getDependencies           = require("cjs-module/get-dependencies");
 
@@ -40,9 +41,9 @@ const resolveLambdaModulePaths = (servicePath, functionObject) =>
 				}
 			}
 			const servicePathLength = servicePath.length + 1;
-			return Promise.all(
+			return BbPromise.all(
 				Array.from(dirPaths, dirPath => resolve(dirPath, "package.json")).map(filePath =>
-					lstat(filePath).then(
+					fs.lstat(filePath).then(
 						stats => stats.isFile() ? filePath : null,
 						err => {
 							if (err.code === "ENOENT") return null;
@@ -68,14 +69,14 @@ module.exports = class Reducer {
 			const { servicePath } = serverless.config;
 
 			if (!functionObject.handler) {
-				return Promise.reject(
+				return BbPromise.reject(
 					new Error(
 						`Function ${ JSON.stringify(functionName) } misses 'handler' configuration`
 					)
 				);
 			}
 
-			return Promise.all([
+			return BbPromise.all([
 				// Get all lambda dependencies resolved by walking require paths
 				resolveLambdaModulePaths(servicePath, functionObject),
 				// Get all files mentioned specifically in 'include' option
