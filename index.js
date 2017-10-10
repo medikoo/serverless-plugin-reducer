@@ -43,7 +43,7 @@ const resolveLambdaModulePaths = (servicePath, functionObject) =>
 			const servicePathLength = servicePath.length + 1;
 			return BbPromise.all(
 				Array.from(dirPaths, dirPath => resolve(dirPath, "package.json")).map(filePath =>
-					fs.lstatAsync(filePath).then(
+					fs.statAsync(filePath).then(
 						stats => stats.isFile() ? filePath : null,
 						err => {
 							if (err.code === "ENOENT") return null;
