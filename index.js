@@ -22,7 +22,7 @@ const resolveLambdaModulePaths = (servicePath, functionObject) =>
 		}
 		const dirPaths = new Set([servicePath]);
 
-		// Resolve list of all dependencies of main lambda program
+		// Resolve list of all dependencies of the main lambda program
 		return getDependencies(programPath).then(deps => {
 			// Ensure to additionally take in all 'package.json' files existing in directories
 			// which contain dependency modules
