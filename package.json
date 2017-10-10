@@ -15,11 +15,8 @@
   },
   "dependencies": {
     "cjs-module": "^1.2.2",
-    "deferred": "^0.7.8",
-    "es5-ext": "^0.10.30",
     "fs2": "^0.2.7",
     "globby": "^6.1",
-    "memoizee": "^0.4.11",
     "multimatch": "^2.1"
   },
   "devDependencies": {
