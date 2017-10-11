@@ -57,7 +57,7 @@ const resolveLambdaModulePaths = (servicePath, functionObject) =>
 		});
 	});
 
-module.exports = class Reducer {
+module.exports = class ServerlessPluginReducer {
 	constructor(serverless) {
 		const packagePlugin = serverless.pluginManager.plugins.find(
 			plugin => plugin.constructor.name === "Package"
