@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="3.0.0"></a>
+# [3.0.0](https://github.com/medikoo/serverless-plugin-reducer/compare/v2.3.1...v3.0.0) (2017-11-29)
+
+
+### Bug Fixes
+
+* async function reference ([1e549ef](https://github.com/medikoo/serverless-plugin-reducer/commit/1e549ef))
+* rely on stat instead of lstat ([e75151c](https://github.com/medikoo/serverless-plugin-reducer/commit/e75151c))
+
+
+### Features
+
+* improve class name ([4d3bbad](https://github.com/medikoo/serverless-plugin-reducer/commit/4d3bbad))
+
+
+
 <a name="2.3.1"></a>
 ## [2.3.1](https://github.com/medikoo/serverless-plugin-reducer/compare/v2.3.0...v2.3.1) (2017-09-18)
 
