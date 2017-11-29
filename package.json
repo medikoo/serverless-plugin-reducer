@@ -1,41 +1,36 @@
 {
-  "name": "serverless-plugin-reducer",
-  "version": "2.3.1",
-  "description": "Reduce size of lambda to it's dependencies",
-  "author": "Mariusz Nowak <medyk@medikoo.com> (http://www.medikoo.com/)",
-  "keywords": [
-    "serverless",
-    "plugin",
-    "lamdba",
-    "aws"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/medikoo/serverless-plugin-reducer.git"
-  },
-  "dependencies": {
-    "bluebird": "^3.5.1",
-    "cjs-module": "^1.2.2",
-    "graceful-fs": "^4.1.11",
-    "globby": "^6.1",
-    "multimatch": "^2.1"
-  },
-  "devDependencies": {
-    "eslint": "^4.7.2",
-    "eslint-config-medikoo": "^1.25"
-  },
-  "peerDependencies": {
-    "serverless": "^1.21"
-  },
-  "eslintConfig": {
-    "extends": "medikoo",
-    "root": true,
-    "env": {
-      "node": true
-    }
-  },
-  "scripts": {
-    "lint": "eslint --ignore-path=.gitignore ."
-  },
-  "license": "MIT"
+	"name": "serverless-plugin-reducer",
+	"version": "2.3.1",
+	"description": "Reduce size of lambda to it's dependencies",
+	"author": "Mariusz Nowak <medyk@medikoo.com> (http://www.medikoo.com/)",
+	"keywords": ["serverless", "plugin", "lamdba", "aws"],
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/medikoo/serverless-plugin-reducer.git"
+	},
+	"dependencies": {
+		"bluebird": "^3.5.1",
+		"cjs-module": "^1.2.2",
+		"graceful-fs": "^4.1.11",
+		"globby": "^7.1",
+		"multimatch": "^2.1"
+	},
+	"devDependencies": {
+		"eslint": "^4.12",
+		"eslint-config-medikoo": "^1.30"
+	},
+	"peerDependencies": {
+		"serverless": "^1.21"
+	},
+	"eslintConfig": {
+		"extends": "medikoo",
+		"root": true,
+		"env": {
+			"node": true
+		}
+	},
+	"scripts": {
+		"lint": "eslint --ignore-path=.gitignore ."
+	},
+	"license": "MIT"
 }
