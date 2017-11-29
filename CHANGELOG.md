@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file. See [standa
 <a name="3.0.0"></a>
 # [3.0.0](https://github.com/medikoo/serverless-plugin-reducer/compare/v2.3.1...v3.0.0) (2017-11-29)
 
+Rely on internal methods as introduced with Serverless v1.21
 
 ### Bug Fixes
 
