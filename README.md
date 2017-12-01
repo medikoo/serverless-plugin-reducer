@@ -1,5 +1,5 @@
 # serverless-plugin-reducer
-## Reduce lambda package so it hosts only lambda dependencies
+## Reduce Node.js lambda package so it contains only lambda dependencies
 ## Plugin for Serverless v1
 ### (for Serverless v0.5 version see [serverless-0.5 branch](https://github.com/medikoo/serverless-plugin-reducer/tree/serverless-0.5))
 
