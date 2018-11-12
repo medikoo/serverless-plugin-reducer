@@ -11,8 +11,7 @@ const { resolve, dirname, sep } = require("path")
 const resolveLambdaModulePaths = (servicePath, functionObject) =>
 	// Resolve path to main lambda program
 	cjsResolve(
-		servicePath,
-		`./${ functionObject.handler.slice(0, functionObject.handler.indexOf(".")) }`
+		servicePath, `./${ functionObject.handler.slice(0, functionObject.handler.indexOf(".")) }`
 	)(programPath => {
 		if (!programPath) {
 			throw new Error(
@@ -44,16 +43,18 @@ const resolveLambdaModulePaths = (servicePath, functionObject) =>
 			return BbPromise.all(
 				Array.from(dirPaths, dirPath => resolve(dirPath, "package.json")).map(filePath =>
 					fs.statAsync(filePath).then(
-						stats => stats.isFile() ? filePath : null,
+						stats => (stats.isFile() ? filePath : null),
 						err => {
 							if (err.code === "ENOENT") return null;
 							throw err;
 						}
-					))
+					)
+				)
 			).then(packageJsonPaths =>
 				deps
 					.concat(packageJsonPaths.filter(Boolean))
-					.map(modulePath => modulePath.slice(servicePathLength)));
+					.map(modulePath => modulePath.slice(servicePathLength))
+			);
 		});
 	});
 
@@ -97,7 +98,8 @@ module.exports = class ServerlessPluginReducer {
 								pattern.charAt(0) === "!" ? pattern.slice(1) : `!${ pattern }`
 						)
 					)
-				).concat(includeModulePaths));
+				).concat(includeModulePaths)
+			);
 		};
 	}
 };
