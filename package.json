@@ -14,9 +14,9 @@
     "url": "git://github.com/medikoo/serverless-plugin-reducer.git"
   },
   "dependencies": {
-    "bluebird": "^3.5.1",
-    "cjs-module": "^1.2.2",
-    "graceful-fs": "^4.1.11",
+    "bluebird": "^3.5.3",
+    "cjs-module": "^1.4",
+    "graceful-fs": "^4.1.15",
     "globby": "^7.1",
     "multimatch": "^2.1"
   },
