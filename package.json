@@ -21,8 +21,8 @@
     "multimatch": "^2.1"
   },
   "devDependencies": {
-    "eslint": "^4.12",
-    "eslint-config-medikoo": "^1.30"
+    "eslint": "^5.9",
+    "eslint-config-medikoo": "^1.44"
   },
   "peerDependencies": {
     "serverless": "^1.21"
