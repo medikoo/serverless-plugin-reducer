@@ -19,7 +19,7 @@ test("Serverless Plugin Reducer", t => {
 	};
 	packagePluginMock.serverless = serverlessMock;
 
-	t.test("Simple case", async t => {
+	t.test("Regular", async t => {
 		// eslint-disable-next-line no-new
 		new Plugin(serverlessMock); // plugin just introduces side effects
 
@@ -34,4 +34,5 @@ test("Serverless Plugin Reducer", t => {
 
 		t.end();
 	});
+	t.end();
 });
