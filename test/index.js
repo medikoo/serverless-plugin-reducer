@@ -18,11 +18,10 @@ test("Serverless Plugin Reducer", t => {
 		service: { getFunction: functionName => ({ handler: `${ functionName }/index.handler` }) }
 	};
 	packagePluginMock.serverless = serverlessMock;
+	// eslint-disable-next-line no-new
+	new Plugin(serverlessMock); // plugin just introduces side effects
 
 	t.test("Regular", async t => {
-		// eslint-disable-next-line no-new
-		new Plugin(serverlessMock); // plugin just introduces side effects
-
 		t.deepEqual(
 			(await packagePluginMock.resolveFilePathsFunction("some-lambda")).sort(),
 			[
@@ -34,5 +33,26 @@ test("Serverless Plugin Reducer", t => {
 
 		t.end();
 	});
+
+	t.test("Error: No module at path", async t => {
+		try {
+			await packagePluginMock.resolveFilePathsFunction("no-lambda");
+		} catch (error) {
+			if (error.code !== "INVALID_LAMBDA_HANDLER") throw error;
+			t.equal(error.code, "INVALID_LAMBDA_HANDLER");
+			t.end();
+		}
+	});
+
+	t.test("Error: Outer path require", async t => {
+		try {
+			await packagePluginMock.resolveFilePathsFunction("outer-path-lambda");
+		} catch (error) {
+			if (error.code !== "MODULE_OUT_OF_REACH") throw error;
+			t.equal(error.code, "MODULE_OUT_OF_REACH");
+			t.end();
+		}
+	});
+
 	t.end();
 });
