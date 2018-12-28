@@ -21,7 +21,7 @@
     "multimatch": "3"
   },
   "devDependencies": {
-    "eslint": "^5.9",
+    "eslint": "^5.11.1",
     "eslint-config-medikoo": "^1.44",
     "istanbul": "^0.4.5",
     "tape": "^4.9.1"
