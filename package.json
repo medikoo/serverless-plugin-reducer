@@ -37,7 +37,7 @@
     }
   },
   "scripts": {
-    "coverage": "istanbul cover test/index.js",
+    "coverage": "istanbul cover tape test/index.js/success.js test/index.js/failure.js",
     "check-coverage": "npm run coverage && istanbul check-coverage --statements 80 --function 80 --branches 70 --lines 80",
     "lint": "eslint --ignore-path=.gitignore .",
     "test": "tape test/index.js/success.js test/index.js/failure.js"
