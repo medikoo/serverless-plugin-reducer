@@ -40,7 +40,7 @@
     "coverage": "istanbul cover test/index.js",
     "check-coverage": "npm run coverage && istanbul check-coverage --statements 80 --function 80 --branches 70 --lines 80",
     "lint": "eslint --ignore-path=.gitignore .",
-    "test": "node test/index.js"
+    "test": "tape test/index.js/success.js test/index.js/failure.js"
   },
   "license": "ISC"
 }
