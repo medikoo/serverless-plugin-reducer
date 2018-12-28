@@ -1,10 +1,12 @@
 "use strict";
 
-const { resolve } = require("path")
-    , test        = require("tape")
-    , Plugin      = require("../");
+const { resolve, sep } = require("path")
+    , test             = require("tape")
+    , Plugin           = require("../");
 
 const fixturesPath = resolve(__dirname, "_fixtures");
+
+const ensureOsSeparators = path => path.replace(/\//gu, sep);
 
 test("Serverless Plugin Reducer", t => {
 	const packagePluginMock = {
@@ -24,10 +26,14 @@ test("Serverless Plugin Reducer", t => {
 
 	t.test("Regular", t => {
 		packagePluginMock.resolveFilePathsFunction("some-lambda").then(result => {
-			t.deepEqual(result.sort(), [
-				"node_modules/some-dep/entry.js", "node_modules/some-dep/other.js",
-				"node_modules/some-dep/package.json", "some-lambda/foo.js", "some-lambda/index.js"
-			]);
+			t.deepEqual(
+				result.sort(),
+				[
+					"node_modules/some-dep/entry.js", "node_modules/some-dep/other.js",
+					"node_modules/some-dep/package.json", "some-lambda/foo.js",
+					"some-lambda/index.js"
+				].map(ensureOsSeparators)
+			);
 
 			t.end();
 		});
@@ -76,10 +82,13 @@ test("Serverless Plugin Reducer", t => {
 		packagePluginMock
 			.resolveFilePathsFunction("some-lambda")
 			.then(result => {
-				t.deepEqual(result.sort(), [
-					"node_modules/some-dep/entry.js", "node_modules/some-dep/other.js",
-					"node_modules/some-dep/package.json", "some-lambda/index.js"
-				]);
+				t.deepEqual(
+					result.sort(),
+					[
+						"node_modules/some-dep/entry.js", "node_modules/some-dep/other.js",
+						"node_modules/some-dep/package.json", "some-lambda/index.js"
+					].map(ensureOsSeparators)
+				);
 			})
 			.then(
 				() => {
