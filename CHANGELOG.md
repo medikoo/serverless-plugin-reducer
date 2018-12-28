@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="3.1.0"></a>
+# [3.1.0](https://github.com/medikoo/serverless-plugin-reducer/compare/v3.0.0...v3.1.0) (2018-12-28)
+
+
+### Features
+
+* improve error handling ([460866d](https://github.com/medikoo/serverless-plugin-reducer/commit/460866d))
+* rely on ServerlessPluginReducerError ([1437135](https://github.com/medikoo/serverless-plugin-reducer/commit/1437135))
+
+
+
 <a name="3.0.0"></a>
 # [3.0.0](https://github.com/medikoo/serverless-plugin-reducer/compare/v2.3.1...v3.0.0) (2017-11-29)
 
