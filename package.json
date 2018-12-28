@@ -17,7 +17,7 @@
     "bluebird": "^3.5.3",
     "cjs-module": "^1.4",
     "graceful-fs": "^4.1.15",
-    "globby": "^7.1",
+    "globby": "^8.0.1",
     "multimatch": "^2.1"
   },
   "devDependencies": {
