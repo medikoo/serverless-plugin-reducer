@@ -22,61 +22,75 @@ test("Serverless Plugin Reducer", t => {
 	// eslint-disable-next-line no-new
 	new Plugin(serverlessMock); // plugin just introduces side effects
 
-	t.test("Regular", async t => {
-		t.deepEqual((await packagePluginMock.resolveFilePathsFunction("some-lambda")).sort(), [
-			"node_modules/some-dep/entry.js", "node_modules/some-dep/other.js",
-			"node_modules/some-dep/package.json", "some-lambda/foo.js", "some-lambda/index.js"
-		]);
+	t.test("Regular", t => {
+		packagePluginMock.resolveFilePathsFunction("some-lambda").then(result => {
+			t.deepEqual(result.sort(), [
+				"node_modules/some-dep/entry.js", "node_modules/some-dep/other.js",
+				"node_modules/some-dep/package.json", "some-lambda/foo.js", "some-lambda/index.js"
+			]);
 
-		t.end();
+			t.end();
+		});
 	});
 
-	t.test("Error: No module at path", async t => {
-		t.plan(1);
-		try {
-			await packagePluginMock.resolveFilePathsFunction("no-lambda");
-		} catch (error) {
+	t.test("Error: No module at path", t => {
+		packagePluginMock.resolveFilePathsFunction("no-lambda").catch(error => {
 			if (error.code !== "INVALID_LAMBDA_HANDLER") throw error;
 			t.equal(error.code, "INVALID_LAMBDA_HANDLER");
-		}
-		t.end();
+			t.end();
+		});
 	});
 
-	t.test("Error: Outer path require", async t => {
-		t.plan(1);
-		try {
-			await packagePluginMock.resolveFilePathsFunction("outer-path-lambda");
-		} catch (error) {
+	t.test("Error: Outer path require", t => {
+		packagePluginMock.resolveFilePathsFunction("outer-path-lambda").catch(error => {
 			if (error.code !== "MODULE_OUT_OF_REACH") throw error;
 			t.equal(error.code, "MODULE_OUT_OF_REACH");
-		}
-		t.end();
+			t.end();
+		});
 	});
 
-	t.test("Error: Invalid lambda configuration", async t => {
+	t.test("Error: Invalid lambda configuration", t => {
 		serverlessMock.service.getFunction = () => ({});
-		t.plan(1);
-		try {
-			await packagePluginMock.resolveFilePathsFunction("outer-path-lambda");
-		} catch (error) {
-			if (error.code !== "INVALID_LAMBDA_CONFIGURATION") throw error;
-			t.equal(error.code, "INVALID_LAMBDA_CONFIGURATION");
-		} finally {
-			serverlessMock.service.getFunction = getFunction;
-		}
-		t.end();
+		const onFinally = () => (serverlessMock.service.getFunction = getFunction);
+		packagePluginMock
+			.resolveFilePathsFunction("outer-path-lambda")
+			.catch(error => {
+				if (error.code !== "INVALID_LAMBDA_CONFIGURATION") throw error;
+				t.equal(error.code, "INVALID_LAMBDA_CONFIGURATION");
+			})
+			.then(
+				() => {
+					onFinally();
+					t.end();
+				},
+				error => {
+					onFinally();
+					throw error;
+				}
+			);
 	});
 
-	t.test("Support excludes", async t => {
+	t.test("Support excludes", t => {
 		packagePluginMock.getExcludes = () => ["some-lambda/foo*"];
-		try {
-			t.deepEqual((await packagePluginMock.resolveFilePathsFunction("some-lambda")).sort(), [
-				"node_modules/some-dep/entry.js", "node_modules/some-dep/other.js",
-				"node_modules/some-dep/package.json", "some-lambda/index.js"
-			]);
-		}
-		finally { packagePluginMock.getExcludes = () => []; }
-		t.end();
+		const onFinally = () => (packagePluginMock.getExcludes = () => []);
+		packagePluginMock
+			.resolveFilePathsFunction("some-lambda")
+			.then(result => {
+				t.deepEqual(result.sort(), [
+					"node_modules/some-dep/entry.js", "node_modules/some-dep/other.js",
+					"node_modules/some-dep/package.json", "some-lambda/index.js"
+				]);
+			})
+			.then(
+				() => {
+					onFinally();
+					t.end();
+				},
+				error => {
+					onFinally();
+					throw error;
+				}
+			);
 	});
 	t.end();
 });
