@@ -1,9 +1,10 @@
 "use strict";
 
-const globby                   = require("globby")
-    , multimatch               = require("multimatch")
-    , BbPromise                = require("bluebird")
-    , resolveLambdaModulePaths = require("./lib/private/resolve-lambda-module-paths");
+const globby                       = require("globby")
+    , multimatch                   = require("multimatch")
+    , BbPromise                    = require("bluebird")
+    , resolveLambdaModulePaths     = require("./lib/private/resolve-lambda-module-paths")
+    , ServerlessPluginReducerError = require("./lib/private/serverless-plugin-reducer-error");
 
 module.exports = class ServerlessPluginReducer {
 	constructor(serverless) {
@@ -18,8 +19,9 @@ module.exports = class ServerlessPluginReducer {
 
 			if (!functionObject.handler) {
 				return BbPromise.reject(
-					new Error(
-						`Function ${ JSON.stringify(functionName) } misses 'handler' configuration`
+					new ServerlessPluginReducerError(
+						`Function ${ JSON.stringify(functionName) } misses 'handler' configuration`,
+						"INVALID_LAMBDA_CONFIGURATION"
 					)
 				);
 			}
