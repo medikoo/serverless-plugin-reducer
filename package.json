@@ -23,6 +23,7 @@
 	"devDependencies": {
 		"eslint": "^5.15.1",
 		"eslint-config-medikoo": "^2.1.1",
+		"git-list-updated": "^1.1.2",
 		"istanbul": "^0.4.5",
 		"prettier-elastic": "^1.16.4",
 		"tape": "^4.10.1"
@@ -41,6 +42,8 @@
 		"coverage": "istanbul cover tape test/index.js/success.js test/index.js/failure.js",
 		"check-coverage": "npm run coverage && istanbul check-coverage --statements 80 --function 80 --branches 70 --lines 80",
 		"lint": "eslint --ignore-path=.gitignore .",
+		"lint-updated": "pipe-git-updated --ext=js -- eslint --ignore-pattern '!*'",
+		"prettier-check-updated": "pipe-git-updated --ext=css --ext=html --ext=js --ext=json --ext=md --ext=yaml --ext=yml -- prettier -c",
 		"prettify": "prettier --write --ignore-path .gitignore '**/*.{css,html,js,json,md,yaml,yml}'",
 		"test": "tape test/index.js/success.js test/index.js/failure.js"
 	},
