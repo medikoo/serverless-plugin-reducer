@@ -1,46 +1,46 @@
 {
-  "name": "serverless-plugin-reducer",
-  "version": "3.1.1",
-  "description": "Reduce size of lambda to it's dependencies",
-  "author": "Mariusz Nowak <medyk@medikoo.com> (http://www.medikoo.com/)",
-  "keywords": [
-    "serverless",
-    "plugin",
-    "lamdba",
-    "aws"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/medikoo/serverless-plugin-reducer.git"
-  },
-  "dependencies": {
-    "bluebird": "^3.5.3",
-    "cjs-module": "^1.5.0",
-    "globby": "^8.0.2",
-    "graceful-fs": "^4.1.15",
-    "multimatch": "^3.0.0"
-  },
-  "devDependencies": {
-    "eslint": "^5.15.1",
-    "eslint-config-medikoo": "^2.1.1",
-    "istanbul": "^0.4.5",
-    "tape": "^4.10.1"
-  },
-  "peerDependencies": {
-    "serverless": "^1.21"
-  },
-  "eslintConfig": {
-    "extends": "medikoo",
-    "root": true,
-    "env": {
-      "node": true
-    }
-  },
-  "scripts": {
-    "coverage": "istanbul cover tape test/index.js/success.js test/index.js/failure.js",
-    "check-coverage": "npm run coverage && istanbul check-coverage --statements 80 --function 80 --branches 70 --lines 80",
-    "lint": "eslint --ignore-path=.gitignore .",
-    "test": "tape test/index.js/success.js test/index.js/failure.js"
-  },
-  "license": "ISC"
+	"name": "serverless-plugin-reducer",
+	"version": "3.1.1",
+	"description": "Reduce size of lambda to it's dependencies",
+	"author": "Mariusz Nowak <medyk@medikoo.com> (http://www.medikoo.com/)",
+	"keywords": [
+		"serverless",
+		"plugin",
+		"lamdba",
+		"aws"
+	],
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/medikoo/serverless-plugin-reducer.git"
+	},
+	"dependencies": {
+		"bluebird": "^3.5.3",
+		"cjs-module": "^1.5.0",
+		"globby": "^8.0.2",
+		"graceful-fs": "^4.1.15",
+		"multimatch": "^3.0.0"
+	},
+	"devDependencies": {
+		"eslint": "^5.15.1",
+		"eslint-config-medikoo": "^2.1.1",
+		"istanbul": "^0.4.5",
+		"tape": "^4.10.1"
+	},
+	"peerDependencies": {
+		"serverless": "^1.21"
+	},
+	"eslintConfig": {
+		"extends": "medikoo",
+		"root": true,
+		"env": {
+			"node": true
+		}
+	},
+	"scripts": {
+		"coverage": "istanbul cover tape test/index.js/success.js test/index.js/failure.js",
+		"check-coverage": "npm run coverage && istanbul check-coverage --statements 80 --function 80 --branches 70 --lines 80",
+		"lint": "eslint --ignore-path=.gitignore .",
+		"test": "tape test/index.js/success.js test/index.js/failure.js"
+	},
+	"license": "ISC"
 }
