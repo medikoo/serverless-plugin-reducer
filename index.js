@@ -1,6 +1,7 @@
 "use strict";
 
-const globby                       = require("globby")
+const optionalChaining             = require("es5-ext/optional-chaining")
+    , globby                       = require("globby")
     , multimatch                   = require("multimatch")
     , BbPromise                    = require("bluebird")
     , resolveLambdaModulePaths     = require("./lib/private/resolve-lambda-module-paths")
@@ -8,6 +9,7 @@ const globby                       = require("globby")
 
 module.exports = class ServerlessPluginReducer {
 	constructor(serverless) {
+		const options = optionalChaining(serverless.service.custom, "reducer") || {};
 		const packagePlugin = serverless.pluginManager.plugins.find(
 			plugin => plugin.constructor.name === "Package"
 		);
@@ -28,7 +30,7 @@ module.exports = class ServerlessPluginReducer {
 
 			return BbPromise.all([
 				// Get all lambda dependencies resolved by walking require paths
-				resolveLambdaModulePaths(servicePath, functionObject),
+				resolveLambdaModulePaths(servicePath, functionObject, options),
 				// Get all files mentioned specifically in 'include' option
 				globby(this.getIncludes(funcPackageConfig.include), {
 					cwd: this.serverless.config.servicePath,

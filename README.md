@@ -48,6 +48,15 @@ functions:
                 - required-through-dynamic-path.js
 ```
 
+4. If for some paths module files cannot be found, by default an informative error is thrown.
+   Still if the cases are safe to ignore, you may silence those errors with:
+
+```yaml
+custom:
+    reducer:
+        ignoreMissing: true
+```
+
 ### Tests
 
 ```bash
