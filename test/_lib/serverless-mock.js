@@ -13,5 +13,8 @@ const packagePluginMock = {
 module.exports = packagePluginMock.serverless = {
 	config: { servicePath: fixturesPath },
 	pluginManager: { plugins: [packagePluginMock] },
-	service: { getFunction: functionName => ({ handler: `${ functionName }/index.handler` }) }
+	service: {
+		getFunction: functionName => ({ handler: `${ functionName }/index.handler` }),
+		provider: { runtime: "nodejs8.10" }
+	}
 };

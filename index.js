@@ -14,8 +14,16 @@ module.exports = class ServerlessPluginReducer {
 			plugin => plugin.constructor.name === "Package"
 		);
 
+		const originalResolveFilePathsFunction = packagePlugin.resolveFilePathsFunction;
 		packagePlugin.resolveFilePathsFunction = function (functionName) {
 			const functionObject = this.serverless.service.getFunction(functionName);
+
+			const runtime =
+				functionObject.runtime || this.serverless.service.provider.runtime || "nodejs4.3";
+			if (!runtime.startsWith("nodejs")) {
+				return originalResolveFilePathsFunction.call(this, functionName);
+			}
+
 			const funcPackageConfig = functionObject.package || {};
 			const { servicePath } = serverless.config;
 
