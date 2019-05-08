@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.2.1](https://github.com/medikoo/serverless-plugin-reducer/compare/v3.2.0...v3.2.1) (2019-05-08)
+
+### Bug Fixes
+
+- reduce only node.js lambdas ([924abd0](https://github.com/medikoo/serverless-plugin-reducer/commit/924abd0))
+
 # [3.2.0](https://github.com/medikoo/serverless-plugin-reducer/compare/v3.1.3...v3.2.0) (2019-04-18)
 
 ### Features
