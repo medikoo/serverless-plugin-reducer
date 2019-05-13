@@ -65,14 +65,18 @@ module.exports = class ServerlessPluginReducer {
 				).then(() => {
 					for (const modulePath of includeModulePaths) modulePaths.delete(modulePath);
 					// Apply eventual 'exclude' rules to automatically resolved dependencies
-					return multimatch(
-						Array.from(modulePaths),
-						["**"].concat(
-							excludeGlobPatterns.map(pattern =>
-								pattern.charAt(0) === "!" ? pattern.slice(1) : `!${ pattern }`
+					const result = new Set(
+						multimatch(
+							Array.from(modulePaths),
+							["**"].concat(
+								excludeGlobPatterns.map(pattern =>
+									pattern.charAt(0) === "!" ? pattern.slice(1) : `!${ pattern }`
+								)
 							)
 						)
-					).concat(includeModulePaths);
+					);
+					for (const modulePath of includeModulePaths) result.add(modulePath);
+					return Array.from(result);
 				});
 			});
 		};
