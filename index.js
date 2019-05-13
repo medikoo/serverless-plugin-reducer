@@ -1,7 +1,7 @@
 "use strict";
 
 const optionalChaining             = require("es5-ext/optional-chaining")
-    , { resolve }                  = require("path")
+    , { join, resolve }            = require("path")
     , globby                       = require("globby")
     , multimatch                   = require("multimatch")
     , BbPromise                    = require("bluebird")
@@ -51,6 +51,7 @@ module.exports = class ServerlessPluginReducer {
 				}),
 				this.getExcludes(funcPackageConfig.include)
 			]).then(([modulePaths, includeModulePaths, excludeGlobPatterns]) => {
+				includeModulePaths = includeModulePaths.map(path => join(path));
 				modulePaths = new Set(modulePaths);
 				return BbPromise.all(
 					includeModulePaths.map(includeModulePath => {
