@@ -1,9 +1,11 @@
 "use strict";
 
 const optionalChaining             = require("es5-ext/optional-chaining")
+    , { resolve }                  = require("path")
     , globby                       = require("globby")
     , multimatch                   = require("multimatch")
     , BbPromise                    = require("bluebird")
+    , getDependencies              = require("./lib/private/get-dependencies")
     , resolveLambdaModulePaths     = require("./lib/private/resolve-lambda-module-paths")
     , ServerlessPluginReducerError = require("./lib/private/serverless-plugin-reducer-error");
 
@@ -48,17 +50,30 @@ module.exports = class ServerlessPluginReducer {
 					nodir: true
 				}),
 				this.getExcludes(funcPackageConfig.include)
-			]).then(([modulePaths, includeModulePaths, excludeGlobPatterns]) =>
-				// Apply eventual 'exclude' rules to automatically resolved dependencies
-				multimatch(
-					modulePaths,
-					["**"].concat(
-						excludeGlobPatterns.map(pattern =>
-							pattern.charAt(0) === "!" ? pattern.slice(1) : `!${ pattern }`
+			]).then(([modulePaths, includeModulePaths, excludeGlobPatterns]) => {
+				modulePaths = new Set(modulePaths);
+				return BbPromise.all(
+					includeModulePaths.map(includeModulePath => {
+						if (!includeModulePath.endsWith(".js")) return null;
+						return getDependencies(
+							servicePath, resolve(servicePath, includeModulePath), options
+						).then(dependencies => {
+							for (const dependency of dependencies) modulePaths.add(dependency);
+						});
+					})
+				).then(() => {
+					for (const modulePath of includeModulePaths) modulePaths.delete(modulePath);
+					// Apply eventual 'exclude' rules to automatically resolved dependencies
+					return multimatch(
+						Array.from(modulePaths),
+						["**"].concat(
+							excludeGlobPatterns.map(pattern =>
+								pattern.charAt(0) === "!" ? pattern.slice(1) : `!${ pattern }`
+							)
 						)
-					)
-				).concat(includeModulePaths)
-			);
+					).concat(includeModulePaths);
+				});
+			});
 		};
 	}
 };

@@ -53,5 +53,31 @@ test("Serverless Plugin Reducer: Success", t => {
 				}
 			);
 	});
+
+	t.test("Supports deep dynamic require", t => {
+		packagePluginMock.getIncludes = () => ["dynamic-resolution/dynamically-required.js"];
+		const onFinally = () => (packagePluginMock.getIncludes = () => []);
+		packagePluginMock
+			.resolveFilePathsFunction("dynamic-resolution")
+			.then(result => {
+				t.deepEqual(
+					result.sort(),
+					[
+						"dynamic-resolution/dynamically-required.js", "dynamic-resolution/index.js",
+						"dynamic-resolution/required-by-dynamically-required.js"
+					].map(ensureOsSeparators)
+				);
+			})
+			.then(
+				() => {
+					onFinally();
+					t.end();
+				},
+				error => {
+					onFinally();
+					throw error;
+				}
+			);
+	});
 	t.end();
 });
