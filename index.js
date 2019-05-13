@@ -48,12 +48,12 @@ module.exports = class ServerlessPluginReducer {
 					nodir: true
 				}),
 				this.getExcludes(funcPackageConfig.include)
-			]).then(([modulePaths, includeModulePaths, excludeModulePaths]) =>
+			]).then(([modulePaths, includeModulePaths, excludeGlobPatterns]) =>
 				// Apply eventual 'exclude' rules to automatically resolved dependencies
 				multimatch(
 					modulePaths,
 					["**"].concat(
-						excludeModulePaths.map(pattern =>
+						excludeGlobPatterns.map(pattern =>
 							pattern.charAt(0) === "!" ? pattern.slice(1) : `!${ pattern }`
 						)
 					)
