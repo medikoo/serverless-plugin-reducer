@@ -1,6 +1,10 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+### [3.2.4](https://github.com/medikoo/serverless-plugin-reducer/compare/v3.2.3...v3.2.4) (2020-11-02)
+
+- Declare support for `serlverless` v2
 
 ## [3.2.3](https://github.com/medikoo/serverless-plugin-reducer/compare/v3.2.2...v3.2.3) (2019-05-13)
 
