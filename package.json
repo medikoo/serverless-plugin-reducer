@@ -26,6 +26,7 @@
 		"eslint-config-medikoo": "^2.7.0",
 		"essentials": "^1.1.1",
 		"git-list-updated": "^1.2.1",
+		"github-release-from-cc-changelog": "^2.2.0",
 		"husky": "^2.7.0",
 		"lint-staged": "^8.2.1",
 		"nyc": "^14.1.1",
