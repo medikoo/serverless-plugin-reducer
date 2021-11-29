@@ -1,7 +1,5 @@
-[![*nix build status][nix-build-image]][nix-build-url]
-[![Windows build status][win-build-image]][win-build-url]
+[![Build status][build-image]][build-url]
 [![Tests coverage][cov-image]][cov-url]
-![Transpilation status][transpilation-image]
 [![npm version][npm-image]][npm-url]
 
 # serverless-plugin-reducer
@@ -63,12 +61,9 @@ custom:
 npm test
 ```
 
-[nix-build-image]: https://semaphoreci.com/api/v1/medikoo-org/serverless-plugin-reducer/branches/master/shields_badge.svg
-[nix-build-url]: https://semaphoreci.com/medikoo-org/serverless-plugin-reducer
-[win-build-image]: https://ci.appveyor.com/api/projects/status/rrima2im1r3pdtq0?svg=true
-[win-build-url]: https://ci.appveyor.com/project/medikoo/serverless-plugin-reducer
+[build-image]: https://github.com/medikoo/serverless-plugin-reducer/workflows/Integrate/badge.svg
+[build-url]: https://github.com/medikoo/serverless-plugin-reducer/actions?query=workflow%3AIntegrate
 [cov-image]: https://img.shields.io/codecov/c/github/medikoo/serverless-plugin-reducer.svg
 [cov-url]: https://codecov.io/gh/medikoo/serverless-plugin-reducer
-[transpilation-image]: https://img.shields.io/badge/transpilation-free-brightgreen.svg
 [npm-image]: https://img.shields.io/npm/v/serverless-plugin-reducer.svg
 [npm-url]: https://www.npmjs.com/package/serverless-plugin-reducer
