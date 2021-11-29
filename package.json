@@ -95,5 +95,8 @@
 		"test-prepare": "tape-index",
 		"test-run": "node test.index.js"
 	},
+	"engines": {
+		"node": ">=6.0"
+	},
 	"license": "ISC"
 }
