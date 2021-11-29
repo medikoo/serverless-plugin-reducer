@@ -23,7 +23,7 @@ module.exports = class ServerlessPluginReducer {
 			const runtime =
 				functionObject.runtime || this.serverless.service.provider.runtime || "nodejs4.3";
 			if (!runtime.startsWith("nodejs")) {
-				return originalResolveFilePathsFunction.call(this, functionName);
+				originalResolveFilePathsFunction.call(this, functionName);
 			}
 
 			const funcPackageConfig = functionObject.package || {};
@@ -38,19 +38,26 @@ module.exports = class ServerlessPluginReducer {
 				);
 			}
 
+			const patterns = [];
+			for (const excludePattern of this.getExcludes(funcPackageConfig.exclude, true)) {
+				patterns.push(
+					excludePattern[0] === "!" ? excludePattern.slice(1) : `!${ excludePattern }`
+				);
+			}
+			patterns.push(...this.getIncludes(funcPackageConfig.include || []));
+
 			return BbPromise.all([
 				// Get all lambda dependencies resolved by walking require paths
 				resolveLambdaModulePaths(servicePath, functionObject, options),
 				// Get all files mentioned specifically in 'include' option
-				globby(this.getIncludes(funcPackageConfig.include), {
+				globby(patterns, {
 					cwd: this.serverless.config.servicePath,
 					dot: true,
 					silent: true,
 					follow: true,
 					nodir: true
-				}),
-				this.getExcludes(funcPackageConfig.include)
-			]).then(([modulePaths, includeModulePaths, excludeGlobPatterns]) => {
+				})
+			]).then(([modulePaths, includeModulePaths]) => {
 				includeModulePaths = includeModulePaths.map(path => join(path));
 				modulePaths = new Set(modulePaths);
 				return BbPromise.all(
@@ -63,19 +70,10 @@ module.exports = class ServerlessPluginReducer {
 						});
 					})
 				).then(() => {
-					for (const modulePath of includeModulePaths) modulePaths.delete(modulePath);
 					// Apply eventual 'exclude' rules to automatically resolved dependencies
 					const result = new Set(
-						multimatch(
-							Array.from(modulePaths),
-							["**"].concat(
-								excludeGlobPatterns.map(pattern =>
-									pattern.charAt(0) === "!" ? pattern.slice(1) : `!${ pattern }`
-								)
-							)
-						)
+						multimatch(Array.from(modulePaths), ["**", ...patterns])
 					);
-					for (const modulePath of includeModulePaths) result.add(modulePath);
 					return Array.from(result);
 				});
 			});
