@@ -44,7 +44,11 @@ module.exports = class ServerlessPluginReducer {
 					excludePattern[0] === "!" ? excludePattern.slice(1) : `!${ excludePattern }`
 				);
 			}
-			patterns.push(...this.getIncludes(funcPackageConfig.include || []));
+			patterns.push(
+				...this.getIncludes([
+					...(funcPackageConfig.include || []), ...(funcPackageConfig.patterns || [])
+				])
+			);
 
 			return BbPromise.all([
 				// Get all lambda dependencies resolved by walking require paths
