@@ -4,7 +4,6 @@ const optionalChaining         = require("es5-ext/optional-chaining")
     , { join, resolve }        = require("path")
     , globby                   = require("globby")
     , multimatch               = require("multimatch")
-    , BbPromise                = require("bluebird")
     , getDependencies          = require("./lib/private/get-dependencies")
     , resolveLambdaModulePaths = require("./lib/private/resolve-lambda-module-paths");
 
@@ -17,7 +16,7 @@ module.exports = class ServerlessPluginReducer {
 		const ServerlessError = serverless.classes.Error;
 
 		const originalResolveFilePathsFunction = packagePlugin.resolveFilePathsFunction;
-		packagePlugin.resolveFilePathsFunction = function (functionName) {
+		packagePlugin.resolveFilePathsFunction = async function (functionName) {
 			const functionObject = this.serverless.service.getFunction(functionName);
 
 			const runtime =
@@ -43,7 +42,7 @@ module.exports = class ServerlessPluginReducer {
 				])
 			);
 
-			return BbPromise.all([
+			const [modulePaths, includeModulePaths] = await Promise.all([
 				// Get all lambda dependencies resolved by walking require paths
 				resolveLambdaModulePaths(servicePath, functionObject, {
 					...options,
@@ -57,28 +56,23 @@ module.exports = class ServerlessPluginReducer {
 					follow: true,
 					nodir: true
 				})
-			]).then(([modulePaths, includeModulePaths]) => {
-				includeModulePaths = includeModulePaths.map(path => join(path));
-				modulePaths = new Set(modulePaths);
-				return BbPromise.all(
-					includeModulePaths.map(includeModulePath => {
-						if (!includeModulePath.endsWith(".js")) return null;
-						return getDependencies(
-							servicePath,
-							resolve(servicePath, includeModulePath),
-							{ ...options, ServerlessError }
-						).then(dependencies => {
-							for (const dependency of dependencies) modulePaths.add(dependency);
-						});
-					})
-				).then(() => {
-					// Apply eventual 'exclude' rules to automatically resolved dependencies
-					const result = new Set(
-						multimatch(Array.from(modulePaths), ["**", ...patterns])
-					);
-					return Array.from(result);
-				});
-			});
+			]);
+			const normalizedIncludeModulePaths = includeModulePaths.map(path => join(path));
+			const modulePathsSet = new Set(modulePaths);
+			await Promise.all(
+				normalizedIncludeModulePaths.map(includeModulePath => {
+					if (!includeModulePath.endsWith(".js")) return null;
+					return getDependencies(servicePath, resolve(servicePath, includeModulePath), {
+						...options,
+						ServerlessError
+					}).then(dependencies => {
+						for (const dependency of dependencies) modulePathsSet.add(dependency);
+					});
+				})
+			);
+			// Apply eventual 'exclude' rules to automatically resolved dependencies
+			const result = new Set(multimatch(Array.from(modulePathsSet), ["**", ...patterns]));
+			return Array.from(result);
 		};
 	}
 };
