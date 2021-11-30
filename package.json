@@ -18,7 +18,7 @@
 		"globby": "^11.0.4",
 		"graceful-fs": "^4.2.4",
 		"multimatch": "^5.0.0",
-		"ncjsm": "^2.3.0"
+		"ncjsm": "^4.2.0"
 	},
 	"devDependencies": {
 		"eslint": "^8.3.0",
