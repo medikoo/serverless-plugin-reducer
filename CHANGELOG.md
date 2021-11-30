@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.0](https://github.com/medikoo/serverless-plugin-reducer/compare/v3.2.4...v4.0.0) (2021-11-30)
+
+### ⚠ BREAKING CHANGES
+
+- Serverless Framework version 2 (or later) is required
+- Node.js version 10 or later is required (dropped support for v6 and v8)
+
+### Features
+
+- Handle gentle functions referencing images ([af5f34a](https://github.com/medikoo/serverless-plugin-reducer/commit/af5f34a9b74a9cb01b9b50745253e541109b108b))
+- Recognize `package.patterns` ([8d601f0](https://github.com/medikoo/serverless-plugin-reducer/commit/8d601f03f097c21a3f4435ffb3f5f0adff0a8b4f))
+
+### Bug Fixes
+
+- Fix package patterns resolution ([ae68aad](https://github.com/medikoo/serverless-plugin-reducer/commit/ae68aada3cc826a32415f4f2227642c0ccba2af0))
+
+### Maintenance Improvements
+
+- Drop support for Node.js v8 ([793db57](https://github.com/medikoo/serverless-plugin-reducer/commit/793db574f0a040f74f6d7dc73520db5fc9389900))
+- Drop support for Serverless Framework v1 ([e2bc421](https://github.com/medikoo/serverless-plugin-reducer/commit/e2bc421b7072a4faa434161b00dbb454023fa4c1))
+- Refactor to async/await ([352a36e](https://github.com/medikoo/serverless-plugin-reducer/commit/352a36e19ce894c44bd46de98c48742c9ead913d))
+- Replace internal error class with ServerlessError usage ([b27b087](https://github.com/medikoo/serverless-plugin-reducer/commit/b27b087088cf5aca7e9f4e1bdd7daf8a5a0725b9))
+- Upgrade `globby` to v11 ([3aa8efa](https://github.com/medikoo/serverless-plugin-reducer/commit/3aa8efa5a3d5cdb320a26977c6802c6ea6a4ccf9))
+- Upgrade `multimatch` to v5 ([99935ec](https://github.com/medikoo/serverless-plugin-reducer/commit/99935ec164b6efae83baa616ee54f30c4dabb7c4))
+- Upgrade `ncjsm` to v4 ([b8d6ea4](https://github.com/medikoo/serverless-plugin-reducer/commit/b8d6ea46ddf310aea99461edd32e93fe196ca030))
+
 ### [3.2.4](https://github.com/medikoo/serverless-plugin-reducer/compare/v3.2.3...v3.2.4) (2020-11-02)
 
 - Declare support for `serlverless` v2
