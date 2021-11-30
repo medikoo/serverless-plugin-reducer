@@ -6,9 +6,7 @@
 
 ## Reduce Node.js lambda package so it contains only lambda dependencies
 
-## Plugin for Serverless v1
-
-### (for Serverless v0.5 version see [serverless-0.5 branch](https://github.com/medikoo/serverless-plugin-reducer/tree/serverless-0.5))
+## Plugin for the Serverless Framework v2+
 
 By default Serverless packages whole contents of service folder in which lambda was configured, it raises issues in projects where we maintain many functions under one service.
 
