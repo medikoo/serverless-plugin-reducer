@@ -100,7 +100,7 @@
 		"test-run": "node test.index.js"
 	},
 	"engines": {
-		"node": ">=6.0"
+		"node": ">=8.0"
 	},
 	"license": "ISC"
 }
