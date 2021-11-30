@@ -22,8 +22,8 @@
 		"ncjsm": "^2.3.0"
 	},
 	"devDependencies": {
-		"eslint": "^5.16.0",
-		"eslint-config-medikoo": "^2.7.0",
+		"eslint": "^8.3.0",
+		"eslint-config-medikoo": "^4.1.1",
 		"essentials": "^1.1.1",
 		"git-list-updated": "^1.2.1",
 		"github-release-from-cc-changelog": "^2.2.0",
@@ -51,11 +51,8 @@
 		]
 	},
 	"eslintConfig": {
-		"extends": "medikoo",
-		"root": true,
-		"env": {
-			"node": true
-		}
+		"extends": "medikoo/node",
+		"root": true
 	},
 	"prettier": {
 		"printWidth": 100,
