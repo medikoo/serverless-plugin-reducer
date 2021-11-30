@@ -14,6 +14,7 @@ module.exports = class ServerlessPluginReducer {
 		const packagePlugin = serverless.pluginManager.plugins.find(
 			plugin => plugin.constructor.name === "Package"
 		);
+		const ServerlessError = serverless.classes.Error;
 
 		const originalResolveFilePathsFunction = packagePlugin.resolveFilePathsFunction;
 		packagePlugin.resolveFilePathsFunction = function (functionName) {
@@ -44,7 +45,10 @@ module.exports = class ServerlessPluginReducer {
 
 			return BbPromise.all([
 				// Get all lambda dependencies resolved by walking require paths
-				resolveLambdaModulePaths(servicePath, functionObject, options),
+				resolveLambdaModulePaths(servicePath, functionObject, {
+					...options,
+					ServerlessError
+				}),
 				// Get all files mentioned specifically in 'include' option
 				globby(patterns, {
 					cwd: this.serverless.config.servicePath,
@@ -60,7 +64,9 @@ module.exports = class ServerlessPluginReducer {
 					includeModulePaths.map(includeModulePath => {
 						if (!includeModulePath.endsWith(".js")) return null;
 						return getDependencies(
-							servicePath, resolve(servicePath, includeModulePath), options
+							servicePath,
+							resolve(servicePath, includeModulePath),
+							{ ...options, ServerlessError }
 						).then(dependencies => {
 							for (const dependency of dependencies) modulePaths.add(dependency);
 						});
