@@ -5,7 +5,6 @@ const test           = require("tape")
     , serverlessMock = require("../_lib/serverless-mock");
 
 const [packagePluginMock] = serverlessMock.pluginManager.plugins;
-const { getFunction } = serverlessMock.service;
 
 test("Serverless Plugin Reducer: Failure", t => {
 	// eslint-disable-next-line no-new
@@ -25,27 +24,6 @@ test("Serverless Plugin Reducer: Failure", t => {
 			t.equal(error.code, "MODULE_OUT_OF_REACH");
 			t.end();
 		});
-	});
-
-	t.test("Error: Invalid lambda configuration", t => {
-		serverlessMock.service.getFunction = () => ({});
-		const onFinally = () => (serverlessMock.service.getFunction = getFunction);
-		packagePluginMock
-			.resolveFilePathsFunction("outer-path-lambda")
-			.catch(error => {
-				if (error.code !== "INVALID_LAMBDA_CONFIGURATION") throw error;
-				t.equal(error.code, "INVALID_LAMBDA_CONFIGURATION");
-			})
-			.then(
-				() => {
-					onFinally();
-					t.end();
-				},
-				error => {
-					onFinally();
-					throw error;
-				}
-			);
 	});
 
 	t.end();

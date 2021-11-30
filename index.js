@@ -1,13 +1,12 @@
 "use strict";
 
-const optionalChaining             = require("es5-ext/optional-chaining")
-    , { join, resolve }            = require("path")
-    , globby                       = require("globby")
-    , multimatch                   = require("multimatch")
-    , BbPromise                    = require("bluebird")
-    , getDependencies              = require("./lib/private/get-dependencies")
-    , resolveLambdaModulePaths     = require("./lib/private/resolve-lambda-module-paths")
-    , ServerlessPluginReducerError = require("./lib/private/serverless-plugin-reducer-error");
+const optionalChaining         = require("es5-ext/optional-chaining")
+    , { join, resolve }        = require("path")
+    , globby                   = require("globby")
+    , multimatch               = require("multimatch")
+    , BbPromise                = require("bluebird")
+    , getDependencies          = require("./lib/private/get-dependencies")
+    , resolveLambdaModulePaths = require("./lib/private/resolve-lambda-module-paths");
 
 module.exports = class ServerlessPluginReducer {
 	constructor(serverless) {
@@ -29,14 +28,7 @@ module.exports = class ServerlessPluginReducer {
 			const funcPackageConfig = functionObject.package || {};
 			const { servicePath } = serverless.config;
 
-			if (!functionObject.handler) {
-				return BbPromise.reject(
-					new ServerlessPluginReducerError(
-						`Function ${ JSON.stringify(functionName) } misses 'handler' configuration`,
-						"INVALID_LAMBDA_CONFIGURATION"
-					)
-				);
-			}
+			if (!functionObject.handler) return null; // image case
 
 			const patterns = [];
 			for (const excludePattern of this.getExcludes(funcPackageConfig.exclude, true)) {
