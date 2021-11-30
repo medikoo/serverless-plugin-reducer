@@ -30,7 +30,7 @@
 		"nyc": "^15.1.0",
 		"prettier-elastic": "^2.2.1",
 		"tape": "^5.3.2",
-		"tape-index": "^3.1.0"
+		"tape-index": "^3.2.0"
 	},
 	"peerDependencies": {
 		"serverless": "2 || 3"
