@@ -35,7 +35,7 @@
 		"tape-index": "^3.1.0"
 	},
 	"peerDependencies": {
-		"serverless": "^1.21 || 2"
+		"serverless": "2 || 3"
 	},
 	"husky": {
 		"hooks": {
