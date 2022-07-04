@@ -79,5 +79,32 @@ test("Serverless Plugin Reducer: Success", t => {
 				}
 			);
 	});
+
+	t.test("Supports include with another type of files", t => {
+		packagePluginMock.getIncludes = () => ["some-lambda/some-extra-file"];
+		const onFinally = () => (packagePluginMock.getIncludes = () => []);
+		packagePluginMock
+			.resolveFilePathsFunction("some-lambda")
+			.then(result => {
+				t.deepEqual(
+					result.sort(),
+					[
+						"node_modules/some-dep/entry.js", "node_modules/some-dep/other.js",
+						"node_modules/some-dep/package.json", "some-lambda/foo.js",
+						"some-lambda/index.js", "some-lambda/some-extra-file"
+					].map(ensureOsSeparators)
+				);
+			})
+			.then(
+				() => {
+					onFinally();
+					t.end();
+				},
+				error => {
+					onFinally();
+					throw error;
+				}
+			);
+	});
 	t.end();
 });

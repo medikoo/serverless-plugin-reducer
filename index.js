@@ -61,7 +61,10 @@ module.exports = class ServerlessPluginReducer {
 			const modulePathsSet = new Set(modulePaths);
 			await Promise.all(
 				normalizedIncludeModulePaths.map(includeModulePath => {
-					if (!includeModulePath.endsWith(".js")) return null;
+					if (!includeModulePath.endsWith(".js")) {
+						modulePathsSet.add(includeModulePath);
+						return null;
+					}
 					return getDependencies(servicePath, resolve(servicePath, includeModulePath), {
 						...options,
 						ServerlessError
