@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.0.1](https://github.com/medikoo/serverless-plugin-reducer/compare/v4.0.0...v4.0.1) (2022-07-09)
+
+### Bug Fixes
+
+- Fix package inclusion to accept any file's type ([#8](https://github.com/medikoo/serverless-plugin-reducer/issues/8)) ([e60ed9e](https://github.com/medikoo/serverless-plugin-reducer/commit/e60ed9e5e826daee001aedc538924cf54cc778a8)) ([Diego Henrique Domingues](https://github.com/ddomingues))
+
 ## [4.0.0](https://github.com/medikoo/serverless-plugin-reducer/compare/v3.2.4...v4.0.0) (2021-11-30)
 
 ### ⚠ BREAKING CHANGES
