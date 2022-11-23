@@ -32,7 +32,7 @@ plugins:
   - serverless-plugin-reducer
 ```
 
-3. If there ar some files that need to be included but escape automatic dependencies resolution (e.g. non Node.js module files, or modules required through dynamically resolved paths) they need to be included through `include` option as e.g.
+3. If there are some files that need to be included but escape automatic dependencies resolution (e.g. non Node.js module files, or modules required through dynamically resolved paths) they need to be included through `include` option as e.g.
 
 ```yaml
 functions:
